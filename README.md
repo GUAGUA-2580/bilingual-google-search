@@ -1,6 +1,8 @@
-# 中英双语谷歌搜索插件
+# 中英双语谷歌搜索 · Bilingual Google Search
 
-一个 Chrome（Manifest V3）浏览器插件：在谷歌搜索里输入中文时，自动翻译成英文关键词，并可并排检索中文 + 英文搜索结果。
+一个 Chrome（Manifest V3）浏览器插件：输入中文自动翻译成英文关键词，同页分屏显示中文和英文搜索结果。
+
+A Chrome (Manifest V3) extension that translates your Chinese queries into English keywords and shows Chinese and English search results side by side.
 
 ## 支持的搜索引擎
 
@@ -45,7 +47,7 @@
 
 ## 注意事项
 
-- 插件仅匹配 `google.com` 及常见区域域名（`.com.hk`、`.com.tw`、`.com.sg`、`.co.jp`、`.co.uk`）。如果你使用其他谷歌域名，可在 `manifest.json` 的 `content_scripts.matches` 中自行添加。
+- 插件默认匹配 Google、360 搜索、百度、必应。如需支持其他搜索引擎域名，可在 `manifest.json` 的 `content_scripts.matches` 中自行添加。
 - 英文结果解析是“尽力而为”：Google 页面结构可能变化，若解析失败，可使用“↗ 新标签打开”直接查看英文搜索页。
 - 抓取英文结果优先使用同源请求，复用你的谷歌会话，可有效避免机器人验证。
 
