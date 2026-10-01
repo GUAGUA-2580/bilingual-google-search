@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "中英双语谷歌搜索",
+  "version": "1.0.0",
+  "description": "输入中文自动翻译成英文关键词，同时检索中文和英文搜索结果，支持并排对比。",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://translate.googleapis.com/*",
+    "https://api.mymemory.translated.net/*",
+    "https://api-free.deepl.com/*",
+    "https://api.deepl.com/*",
+    "https://api.openai.com/*",
+    "https://www.bing.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/*",
+        "https://www.google.com.hk/*",
+        "https://www.google.com.tw/*",
+        "https://www.google.com.sg/*",
+        "https://www.google.co.jp/*",
+        "https://www.google.co.uk/*",
+        "https://www.so.com/*",
+        "https://so.com/*",
+        "https://www.baidu.com/*",
+        "https://baidu.com/*",
+        "https://www.bing.com/*",
+        "https://cn.bing.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "中英双语搜索设置",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

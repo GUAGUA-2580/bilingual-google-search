@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h1>中英双语搜索</h1>
+  <p class="sub">设置翻译与检索行为</p>
+
+  <label class="row">
+    <span>自动翻译中文查询</span>
+    <input type="checkbox" id="autoTranslate">
+  </label>
+
+  <label class="row">
+    <span>自动分屏（左中文右英文）</span>
+    <input type="checkbox" id="autoSplit">
+  </label>
+
+  <label class="row">
+    <span>翻译英文结果</span>
+    <input type="checkbox" id="translateResults">
+  </label>
+
+  <div class="row">
+    <span>翻译服务</span>
+    <select id="provider">
+      <option value="google">Google 翻译（免费）</option>
+      <option value="mymemory">MyMemory（免费）</option>
+      <option value="deepl">DeepL（需 API Key）</option>
+      <option value="openai">OpenAI（需 API Key）</option>
+    </select>
+  </div>
+
+  <div class="row" id="keyRow" hidden>
+    <span>API Key</span>
+    <input type="password" id="apiKey" placeholder="粘贴你的 API Key">
+  </div>
+
+  <div class="row">
+    <span>目标语言</span>
+    <input type="text" id="targetLang" value="en" placeholder="en">
+  </div>
+
+  <button id="save">保存设置</button>
+  <div id="status"></div>
+
+  <p class="hint">在 Google / 360 搜索 / 百度 / 必应 搜索中文，结果页会自动分成左右两栏：左边中文结果、右边英文结果。点“⛶ 全屏”切回全屏，点“⇄ 分屏”再切回分屏。</p>
+
+  <script src="popup.js"></script>
+</body>
+</html>
