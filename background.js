@@ -1,7 +1,6 @@
 const DEFAULT_SETTINGS = {
   autoTranslate: true,
   autoSplit: true,
-  translateResults: false,
   provider: 'google',
   apiKey: '',
   targetLang: 'en'

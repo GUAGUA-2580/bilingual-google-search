@@ -16,7 +16,7 @@
 }
 
 #bgsp-pane .bgsp-pane-head {
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-bottom: 1px solid #e8eaed;
   background: #f8f9fa;
 }
@@ -24,7 +24,7 @@
 #bgsp-pane .bgsp-pane-title {
   font-weight: 600;
   font-size: 15px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 #bgsp-pane .bgsp-pane-query {
@@ -39,7 +39,7 @@
 }
 
 #bgsp-pane .bgsp-pane-actions {
-  margin-top: 10px;
+  margin-top: 8px;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -50,67 +50,21 @@
   background: #ffffff;
   color: #1a73e8;
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: 5px 12px;
   cursor: pointer;
   font-size: 13px;
 }
 
-#bgsp-pane .bgsp-chip.active {
-  background: #1a73e8;
-  color: #ffffff;
-  border-color: #1a73e8;
+#bgsp-pane .bgsp-chip:hover {
+  background: #f1f3f4;
 }
 
-#bgsp-pane .bgsp-pane-body {
+#bgsp-frame {
   flex: 1;
-  overflow-y: auto;
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-#bgsp-pane .bgsp-result {
+  width: 100%;
+  border: 0;
   display: block;
-  text-decoration: none;
-  color: inherit;
-  border: 1px solid #eeeeee;
-  border-radius: 8px;
-  padding: 10px 12px;
-}
-
-#bgsp-pane .bgsp-result:hover {
-  background: #f8f9fa;
-}
-
-#bgsp-pane .bgsp-result-title {
-  color: #1a0dab;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-#bgsp-pane .bgsp-result-zh {
-  color: #5f6368;
-  font-size: 13px;
-  margin-top: 2px;
-}
-
-#bgsp-pane .bgsp-result-host {
-  color: #006621;
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-#bgsp-pane .bgsp-result-snippet {
-  color: #4d5156;
-  font-size: 13px;
-  margin-top: 3px;
-}
-
-#bgsp-pane .bgsp-loading,
-#bgsp-pane .bgsp-empty {
-  color: #5f6368;
-  padding: 12px 0;
+  background: #ffffff;
 }
 
 #bgsp-fab {

@@ -1,7 +1,6 @@
 const DEFAULTS = {
   autoTranslate: true,
   autoSplit: true,
-  translateResults: false,
   provider: 'google',
   apiKey: '',
   targetLang: 'en'
@@ -12,7 +11,6 @@ async function init() {
   const s = { ...DEFAULTS, ...current };
   document.getElementById('autoTranslate').checked = !!s.autoTranslate;
   document.getElementById('autoSplit').checked = !!s.autoSplit;
-  document.getElementById('translateResults').checked = !!s.translateResults;
   document.getElementById('provider').value = s.provider;
   document.getElementById('apiKey').value = s.apiKey || '';
   document.getElementById('targetLang').value = s.targetLang || 'en';
@@ -30,7 +28,6 @@ document.getElementById('save').addEventListener('click', async () => {
   await chrome.storage.sync.set({
     autoTranslate: document.getElementById('autoTranslate').checked,
     autoSplit: document.getElementById('autoSplit').checked,
-    translateResults: document.getElementById('translateResults').checked,
     provider: document.getElementById('provider').value,
     apiKey: document.getElementById('apiKey').value.trim(),
     targetLang: document.getElementById('targetLang').value.trim() || 'en'
