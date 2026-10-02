@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "中英双语谷歌搜索",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "输入中文自动翻译成英文关键词，同时检索中文和英文搜索结果，支持并排对比。",
   "permissions": [
     "storage"

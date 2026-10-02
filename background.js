@@ -12,6 +12,18 @@ async function getSettings() {
   return { ...DEFAULT_SETTINGS, ...data };
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function fetchWithTimeout(url, options = {}, timeoutMs = 12000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() =>
+    clearTimeout(timer)
+  );
+}
+
 chrome.runtime.onInstalled.addListener(async () => {
   const current = await chrome.storage.sync.get(DEFAULT_SETTINGS);
   await chrome.storage.sync.set({ ...DEFAULT_SETTINGS, ...current });
@@ -23,7 +35,7 @@ function translateGoogle(text, to) {
     encodeURIComponent(to) +
     '&dt=t&dj=1&q=' +
     encodeURIComponent(text);
-  return fetch(url).then(async (r) => {
+  return fetchWithTimeout(url).then(async (r) => {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
     if (data && Array.isArray(data.sentences)) {
@@ -157,7 +169,7 @@ function fetchSearchHtml(query, lang) {
     '&hl=' +
     encodeURIComponent(lang) +
     '&gl=us&num=10';
-  return fetch(url, {
+  return fetchWithTimeout(url, {
     headers: { 'Accept-Language': lang + ';q=0.9,en;q=0.8' }
   }).then(async (r) => {
     if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -165,17 +177,27 @@ function fetchSearchHtml(query, lang) {
   });
 }
 
-function fetchBingHtml(query) {
+async function fetchBingHtml(query) {
   const url =
     'https://www.bing.com/search?q=' +
     encodeURIComponent(query) +
     '&setlang=en&mkt=en-US&count=10';
-  return fetch(url, {
-    headers: { 'Accept-Language': 'en-US,en;q=0.9' }
-  }).then(async (r) => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return await r.text();
-  });
+  let lastError = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt > 0) await sleep(700 * attempt);
+    try {
+      const r = await fetchWithTimeout(url, {
+        headers: { 'Accept-Language': 'en-US,en;q=0.9' }
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const text = await r.text();
+      if (text && text.length > 1000) return text;
+      throw new Error('empty response');
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  throw lastError || new Error('bing fetch failed');
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -208,4 +230,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
   })().then(sendResponse);
   return true;
+});
+
+self.addEventListener('error', (e) => {
+  console.error('SW error:', e && e.message);
+});
+
+self.addEventListener('unhandledrejection', (e) => {
+  console.error('SW unhandledrejection:', e && e.reason);
 });

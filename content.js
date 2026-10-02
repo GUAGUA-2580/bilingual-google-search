@@ -208,12 +208,10 @@
   }
 
   async function fetchBingResults(query) {
-    for (let attempt = 0; attempt < 2; attempt++) {
-      const r = await sendMessage({ type: 'fetchBing', query });
-      if (r && r.ok) {
-        const items = parseBingHtml(r.html);
-        if (isRelevant(items, query)) return items;
-      }
+    const r = await sendMessage({ type: 'fetchBing', query });
+    if (r && r.ok) {
+      const items = parseBingHtml(r.html);
+      return isRelevant(items, query) ? items : [];
     }
     return [];
   }
@@ -239,6 +237,16 @@
       if (items.length) return items;
     }
     return fetchBingResults(query);
+  }
+
+  async function retryEnglish() {
+    if (!paneEl || state.fetching || !state.translation) return;
+    state.fetching = true;
+    renderResults();
+    state.results = await fetchEnglishResults(state.translation);
+    state.fetching = false;
+    if (state.translated && state.results.length) await applyTranslations();
+    renderResults();
   }
 
   function headerTop() {
@@ -300,9 +308,13 @@
     }
     if (!state.results.length) {
       box.innerHTML =
-        '<div class="bgsp-empty">未能获取英文结果。<a href="' +
+        '<div class="bgsp-empty">未能获取英文结果。' +
+        '<button id="bgsp-retry" class="bgsp-chip">🔄 重试</button> ' +
+        '<a href="' +
         escapeAttr(englishUrl(state.translation)) +
         '" target="_blank" rel="noopener">在新标签打开英文搜索</a></div>';
+      const retryBtn = box.querySelector('#bgsp-retry');
+      if (retryBtn) retryBtn.addEventListener('click', retryEnglish);
       return;
     }
     box.innerHTML = state.results
