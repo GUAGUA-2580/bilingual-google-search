@@ -119,6 +119,18 @@
     return u.toString();
   }
 
+  function translatedSearchUrl(q) {
+    // 谷歌自己的搜索结果页经谷歌翻译代理会触发“sorry”人机验证，改用必应结果页翻译，可稳定整页中文化。
+    const bing = new URL('https://www.bing.com/search');
+    bing.searchParams.set('q', q);
+    bing.searchParams.set('setlang', 'en');
+    bing.searchParams.set('mkt', 'en-US');
+    return (
+      'https://translate.google.com/translate?sl=auto&tl=zh-CN&u=' +
+      encodeURIComponent(bing.toString())
+    );
+  }
+
   function headerTop() {
     const sel = leftSelector();
     const el = sel ? document.querySelector(sel) : null;
@@ -135,6 +147,7 @@
       '  <div class="bgsp-pane-title">🌐 中英双语搜索</div>' +
       '  <div class="bgsp-pane-query" id="bgsp-query"></div>' +
       '  <div class="bgsp-pane-actions">' +
+      '    <button id="bgsp-translate" class="bgsp-chip">🌐 翻译整页</button>' +
       '    <button id="bgsp-newtab" class="bgsp-chip">↗ 新标签打开</button>' +
       '    <button id="bgsp-full" class="bgsp-chip">⛶ 全屏</button>' +
       '    <button id="bgsp-close" class="bgsp-chip">× 关闭</button>' +
@@ -144,6 +157,9 @@
     document.body.appendChild(paneEl);
     paneEl.querySelector('#bgsp-full').addEventListener('click', enterFull);
     paneEl.querySelector('#bgsp-close').addEventListener('click', dismissAll);
+    paneEl.querySelector('#bgsp-translate').addEventListener('click', () => {
+      window.open(translatedSearchUrl(state.translation), '_blank', 'noopener');
+    });
     paneEl.querySelector('#bgsp-newtab').addEventListener('click', () => {
       window.open(englishSearchUrl(state.translation), '_blank', 'noopener');
     });
